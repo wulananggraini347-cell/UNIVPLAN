@@ -537,3 +537,90 @@
             </button>
 
             <div class="flex items-center gap-2">
+                <div class="p-2.5 rounded-2xl bg-cream-100/10 text-cream-100">
+                    <i data-lucide="calculator" class="w-5 h-5"></i>
+                </div>
+                <h3 class="font-bold text-lg text-white" id="modal-grade-title">Input Nilai Mata Kuliah</h3>
+            </div>
+
+            <form id="form-grade" onsubmit="saveGradeItem(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="grade-item-id">
+                
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Semester *</label>
+                    <select id="grade-semester" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cream-100">
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Nama Mata Kuliah *</label>
+                    <input type="text" id="grade-course-name" required placeholder="Contoh: Matematika Diskrit" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cream-100">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-1">SKS *</label>
+                        <input type="number" id="grade-sks" min="1" max="8" value="3" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cream-100">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 font-semibold mb-1">Nilai Huruf *</label>
+                        <select id="grade-letter" required class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-cream-100">
+                            <option value="A">A (4.00)</option>
+                            <option value="A-">A- (3.70)</option>
+                            <option value="B+">B+ (3.30)</option>
+                            <option value="B">B (3.00)</option>
+                            <option value="B-">B- (2.70)</option>
+                            <option value="C+">C+ (2.30)</option>
+                            <option value="C">C (2.00)</option>
+                            <option value="D">D (1.00)</option>
+                            <option value="E">E (0.00)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-slate-300 font-semibold mb-1">Catatan Evaluasi / Hambatan Belajar</label>
+                    <textarea id="grade-notes" rows="2" placeholder="Misal: Kurang paham di UTS, perlu review kuis mingguan" class="w-full bg-navy-900 border border-slate-700 rounded-xl px-3.5 py-2 text-slate-100 focus:outline-none focus:border-cream-100"></textarea>
+                </div>
+
+                <div class="pt-2 flex justify-end gap-2">
+                    <button type="button" onclick="closeModal('gpa_grade')" class="px-4 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:bg-navy-700 transition">Batal</button>
+                    <button type="submit" class="cream-gradient text-navy-900 font-bold px-5 py-2.5 rounded-xl hover:opacity-90 transition">Simpan Nilai</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const DEFAULT_COURSES = [
+            { id: '1', name: 'Algoritma & Pemrograman', day: 'Senin', start: '08:00', end: '10:30', room: 'Lab Komputer 2', lecturer: 'Dr. Ahmad Wijaya, M.T.', sks: 3, color: 'cream', category: 'Wajib' },
+            { id: '2', name: 'Basis Data Lanjut', day: 'Senin', start: '13:00', end: '15:30', room: 'Gedung B201', lecturer: 'Rina Rahmawati, S.Kom.', sks: 3, color: 'blue', category: 'Wajib' },
+            { id: '3', name: 'Interaksi Manusia & Komputer', day: 'Selasa', start: '09:30', end: '12:00', room: 'Ruang Teori 4', lecturer: 'Budi Kurniawan, M.Sc.', sks: 2, color: 'emerald', category: 'Pilihan' },
+            { id: '4', name: 'Pemrograman Web Lanjut', day: 'Rabu', start: '08:00', end: '11:00', room: 'Lab Cyber', lecturer: 'Hendrikus, M.T.', sks: 4, color: 'amber', category: 'Praktikum' },
+            { id: '5', name: 'Kecerdasan Buatan', day: 'Kamis', start: '10:00', end: '12:30', room: 'Gedung A102', lecturer: 'Prof. Dr. Ir. Diana', sks: 3, color: 'rose', category: 'Wajib' }
+        ];
+
+        const DEFAULT_TASKS = [
+            { id: 't1', title: 'Submit ERD Database Store', courseId: '2', deadline: '2026-10-15', completed: false },
+            { id: 't2', title: 'Laporan Mini Project Tailwind & JS', courseId: '4', deadline: '2026-10-18', completed: false },
+            { id: 't3', title: 'Review Paper Neural Network', courseId: '5', deadline: '2026-10-22', completed: true }
+        ];
+
+        const DEFAULT_GRADES = [
+            { id: 'g1', semester: 1, name: 'Matematika Diskrit', sks: 3, letter: 'B+', notes: 'Perlu latihan logika lebih banyak di topik Graf.' },
+            { id: 'g2', semester: 1, name: 'Algoritma Pemrograman 1', sks: 4, letter: 'A', notes: 'Sangat baik, pertahankan.' },
+            { id: 'g3', semester: 1, name: 'Pengantar IT', sks: 2, letter: 'A-', notes: 'Tugas presentasi kelompok memuaskan.' },
+            { id: 'g4', semester: 2, name: 'Struktur Data', sks: 3, letter: 'C+', notes: 'Perlu belajar ulang Pointer & Tree untuk persiapan Semester Pendek.' },
+            { id: 'g5', semester: 2, name: 'Sistem Operasi', sks: 3, letter: 'B-', notes: 'Nilai Kuis agak rendah, tertolong oleh UAP.' }
+        ];
+
+        const GRADE_SCALE = {
+            'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7, 'C+': 2.
